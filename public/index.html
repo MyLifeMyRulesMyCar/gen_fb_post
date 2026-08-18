@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elephantronics Prompt Builder</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">&#128024;</span>
+      <span class="brand-name"><span class="orange">Elephant</span><span class="white">ronics</span></span>
+      <span class="brand-sub">PROMPT BUILDER</span>
+    </div>
+    <div class="actions">
+      <button id="btn-suggest" class="btn btn-glow" title="Let AI fill/polish creative fields">&#10024; AI Suggest</button>
+      <button id="btn-generate" class="btn btn-primary">Generate Prompt</button>
+      <button id="btn-save" class="btn btn-ghost">Save</button>
+      <button id="btn-new" class="btn btn-ghost">New</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button id="tab-poster" class="tab active" type="button">Poster</button>
+    <button id="tab-comparison" class="tab" type="button">Product Comparison</button>
+  </div>
+
+  <div class="layout">
+    <main class="form-col">
+      <div id="panel-poster">
+      <div class="field name-row">
+        <label for="f-name">Design name</label>
+        <input id="f-name" type="text" placeholder="e.g. GPS & GSM pack" />
+      </div>
+
+      <section class="card">
+        <h2>Headline</h2>
+        <div class="grid-2">
+          <div class="field">
+            <label for="f-main1">Main headline 1 <span class="hint">(white text)</span></label>
+            <input id="f-main1" type="text" />
+          </div>
+          <div class="field">
+            <label for="f-main2">Main headline 2 <span class="hint">(gold text)</span></label>
+            <input id="f-main2" type="text" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Promo strip</h2>
+        <div class="grid-2">
+          <div class="field">
+            <label for="f-promo-sub">Sub-headline <span class="hint">(black on orange)</span></label>
+            <input id="f-promo-sub" type="text" />
+          </div>
+          <div class="field">
+            <label for="f-promo-tag">Tagline <span class="hint">(white)</span></label>
+            <input id="f-promo-tag" type="text" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Badge <span class="hint">(top-right, angled)</span></h2>
+        <div class="grid-2">
+          <div class="field">
+            <label for="f-badge-top">Top text <span class="hint">(white on red)</span></label>
+            <input id="f-badge-top" type="text" />
+          </div>
+          <div class="field">
+            <label for="f-badge-bottom">Bottom text <span class="hint">(black on yellow)</span></label>
+            <input id="f-badge-bottom" type="text" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>Products</h2>
+          <button id="btn-add-product" class="btn btn-small btn-ghost">+ Add product</button>
+        </div>
+        <div id="products"></div>
+      </section>
+      </div>
+
+      <div id="panel-comparison" class="hidden">
+        <div class="field name-row">
+          <label for="c-name">Design name</label>
+          <input id="c-name" type="text" placeholder="e.g. Arduino UNO vs ESP32" />
+        </div>
+
+        <section class="card">
+          <h2>Comparison</h2>
+          <div class="grid-2">
+            <div class="field">
+              <label for="c-title">Comparison title</label>
+              <input id="c-title" type="text" placeholder="ARDUINO UNO VS ESP32" />
+            </div>
+            <div class="field">
+              <label for="c-subtitle">Subtitle</label>
+              <input id="c-subtitle" type="text" placeholder="Choose The Right Board For Your Project" />
+            </div>
+            <div class="field">
+              <label for="c-discount-amount">Discount amount</label>
+              <input id="c-discount-amount" type="text" placeholder="15% OFF" />
+            </div>
+            <div class="field">
+              <label for="c-discount-text">Discount text</label>
+              <input id="c-discount-text" type="text" placeholder="ON DEVELOPMENT BOARDS" />
+            </div>
+            <div class="field">
+              <label for="c-cta">CTA text</label>
+              <input id="c-cta" type="text" placeholder="BUILD • CREATE • INNOVATE" />
+            </div>
+            <div class="field">
+              <label for="c-website">Website</label>
+              <input id="c-website" type="text" value="elephantronics.lk" />
+            </div>
+            <div class="field">
+              <label for="c-count">Number of products</label>
+              <select id="c-count">
+                <option value="2">2 products</option>
+                <option value="3">3 products</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head"><h2>Product cards</h2></div>
+          <div id="c-products"></div>
+        </section>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <section class="card">
+        <h2>Settings</h2>
+        <div class="field">
+          <label for="f-apikey">OpenRouter API key</label>
+          <input id="f-apikey" type="password" placeholder="sk-or-..." autocomplete="off" />
+          <div id="key-status" class="key-status"></div>
+        </div>
+        <div class="field">
+          <label for="f-model">Model</label>
+          <input id="f-model" type="text" list="model-list" placeholder="openrouter/free" />
+          <datalist id="model-list">
+            <option value="openrouter/free"></option>
+            <option value="google/gemma-4-31b-it:free"></option>
+            <option value="google/gemma-4-26b-a4b-it:free"></option>
+            <option value="z-ai/glm-5.2:free"></option>
+            <option value="openai/gpt-oss-20b:free"></option>
+            <option value="nvidia/nemotron-3-super-120b-a12b:free"></option>
+            <option value="cohere/north-mini-code:free"></option>
+          </datalist>
+        </div>
+        <button id="btn-save-settings" class="btn btn-ghost btn-block">Save settings</button>
+      </section>
+
+      <section class="card">
+        <h2>History</h2>
+        <div id="history" class="history"></div>
+      </section>
+    </aside>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Final prompt</h3>
+        <div class="modal-actions">
+          <button id="btn-copy" class="btn btn-primary">Copy</button>
+          <button id="btn-modal-save" class="btn btn-ghost">Save</button>
+          <button id="btn-close" class="btn btn-ghost">Close</button>
+        </div>
+      </div>
+      <textarea id="output" readonly spellcheck="false"></textarea>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
