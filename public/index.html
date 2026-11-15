@@ -23,7 +23,9 @@
 
   <div class="tabs">
     <button id="tab-poster" class="tab active" type="button">Poster</button>
+    <button id="tab-hero" class="tab" type="button">Single Product</button>
     <button id="tab-comparison" class="tab" type="button">Product Comparison</button>
+    <button id="tab-image" class="tab" type="button">Generate Image</button>
   </div>
 
   <div class="layout">
@@ -85,6 +87,72 @@
       </section>
       </div>
 
+      <div id="panel-hero" class="hidden">
+        <div class="field name-row">
+          <label for="h-name">Design name</label>
+          <input id="h-name" type="text" placeholder="e.g. ESP32 DevKit V1 hero" />
+        </div>
+
+        <section class="card">
+          <h2>Hero product</h2>
+          <div class="grid-2">
+            <div class="field">
+              <label for="h-product">Product name</label>
+              <input id="h-product" type="text" placeholder="ESP32 DevKit V1" />
+            </div>
+            <div class="field">
+              <label for="h-kicker">Kicker <span class="hint">(small label above the name)</span></label>
+              <input id="h-kicker" type="text" placeholder="NEW ARRIVAL" />
+            </div>
+            <div class="field product-full">
+              <label for="h-desc">One-line description</label>
+              <input id="h-desc" type="text" placeholder="Dual-core Wi-Fi + Bluetooth board for IoT projects" />
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Price and badge</h2>
+          <div class="grid-2">
+            <div class="field">
+              <label for="h-price">Price <span class="hint">(big, gold)</span></label>
+              <input id="h-price" type="text" placeholder="LKR 3,450 ONLY" />
+            </div>
+            <div class="field">
+              <label for="h-was">Was price <span class="hint">(optional, struck through)</span></label>
+              <input id="h-was" type="text" placeholder="LKR 4,200" />
+            </div>
+            <div class="field">
+              <label for="h-badge">Badge text <span class="hint">(top-right)</span></label>
+              <input id="h-badge" type="text" placeholder="LIMITED STOCK" />
+            </div>
+            <div class="field">
+              <label>Accent color</label>
+              <div id="h-colors" class="color-row"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head"><h2>Features</h2></div>
+          <div id="h-features" class="grid-2"></div>
+        </section>
+
+        <section class="card">
+          <h2>Footer</h2>
+          <div class="grid-2">
+            <div class="field">
+              <label for="h-cta">CTA text</label>
+              <input id="h-cta" type="text" placeholder="ORDER NOW" />
+            </div>
+            <div class="field">
+              <label for="h-website">Website</label>
+              <input id="h-website" type="text" value="elephantronics.lk" />
+            </div>
+          </div>
+        </section>
+      </div>
+
       <div id="panel-comparison" class="hidden">
         <div class="field name-row">
           <label for="c-name">Design name</label>
@@ -133,13 +201,358 @@
           <div id="c-products"></div>
         </section>
       </div>
-    </main>
 
+      <div id="panel-image" class="hidden">
+        <div class="field name-row">
+          <label for="i-name">File name</label>
+          <input id="i-name" type="text" placeholder="e.g. esp32-hero" />
+        </div>
+
+        <section class="card">
+          <div class="section-head">
+            <h2>Renderer</h2>
+            <span class="hint">Local = instant, free, exact brand colours</span>
+          </div>
+          <div class="provider-row">
+            <label class="provider"><input type="radio" name="i-provider" value="local" checked /> <span><b>Local render</b><em>Build the poster here with the real logo. No API, no cost.</em></span></label>
+            <label class="provider"><input type="radio" name="i-provider" value="byteplus" /> <span><b>BytePlus Seedream</b><em>2K art, strong at in-image text. Needs ARK_API_KEY.</em></span></label>
+            <label class="provider"><input type="radio" name="i-provider" value="horde" /> <span><b>AI Horde</b><em>Free, no key, no signup. Queue 1–5 min, about 576 px, art only — no logo or type.</em></span></label>
+            <label class="provider"><input type="radio" name="i-provider" value="gemini" /> <span><b>Gemini AI image</b><em>Photo-real art. Needs a paid Gemini key.</em></span></label>
+            <label class="provider"><input type="radio" name="i-provider" value="cloudflare" /> <span><b>Cloudflare Workers AI</b><em>Free 10k neurons/day. Needs a free account ID and token.</em></span></label>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="i-ratio">Aspect ratio</label>
+              <select id="i-ratio">
+                <option value="1:1">1:1 — square feed</option>
+                <option value="4:5">4:5 — portrait feed</option>
+                <option value="9:16">9:16 — story / reel</option>
+                <option value="16:9">16:9 — banner / YouTube</option>
+                <option value="3:2">3:2 — landscape</option>
+                <option value="2:3">2:3 — tall portrait</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="i-logo">Logo <span class="hint">(brand file)</span></label>
+              <select id="i-logo"><option value="">Loading...</option></select>
+            </div>
+            <div class="field">
+              <label for="i-photo">Product photo <span class="hint">(optional)</span></label>
+              <select id="i-photo"><option value="">None</option></select>
+            </div>
+            <div class="field" id="i-model-field">
+              <label for="i-model">Gemini model</label>
+              <select id="i-model">
+                <option value="gemini-3.1-flash-image">gemini-3.1-flash-image (default)</option>
+                <option value="gemini-3-pro-image">gemini-3-pro-image (higher quality)</option>
+                <option value="gemini-3.1-flash-lite-image">gemini-3.1-flash-lite-image (cheapest)</option>
+                <option value="gemini-2.5-flash-image">gemini-2.5-flash-image (legacy)</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="i-local-card">
+          <div class="section-head">
+            <h2>Poster text</h2>
+            <button id="btn-load-hero" class="btn btn-small btn-ghost" type="button">Copy from Single Product Hero</button>
+          </div>
+          <div class="provider-row layout-row">
+            <label class="provider"><input type="radio" name="i-layout" value="single" checked /> <span><b>Single product</b><em>One product, price, feature chips.</em></span></label>
+            <label class="provider"><input type="radio" name="i-layout" value="comparison" /> <span><b>Product comparison</b><em>Two products, feature lists, discount badge.</em></span></label>
+            <label class="provider"><input type="radio" name="i-layout" value="grid" /> <span><b>Four-product grid</b><em>Retail board round-up with prices.</em></span></label>
+          </div>
+
+          <div id="i-single-fields">
+          <div class="grid-2">
+            <div class="field">
+              <label for="p-kicker">Kicker</label>
+              <input id="p-kicker" type="text" placeholder="NEW ARRIVAL" />
+            </div>
+            <div class="field">
+              <label for="p-badge">Badge</label>
+              <input id="p-badge" type="text" placeholder="LIMITED STOCK" />
+            </div>
+            <div class="field field-wide">
+              <label for="p-headline">Headline</label>
+              <input id="p-headline" type="text" placeholder="ESP32 DEVKIT V1" />
+            </div>
+            <div class="field field-wide">
+              <label for="p-subhead">Sub-line <span class="hint">(one short line)</span></label>
+              <input id="p-subhead" type="text" placeholder="Dual-core Wi-Fi + Bluetooth dev board" />
+            </div>
+            <div class="field">
+              <label for="p-price">Price</label>
+              <input id="p-price" type="text" placeholder="LKR 3,450" />
+            </div>
+            <div class="field">
+              <label for="p-was">Was price</label>
+              <input id="p-was" type="text" placeholder="LKR 4,200" />
+            </div>
+            <div class="field field-wide">
+              <label for="p-features">Feature chips <span class="hint">(comma separated, max 6)</span></label>
+              <input id="p-features" type="text" placeholder="Wi-Fi + BLE, 38 pins, USB-C" />
+            </div>
+            <div class="field">
+              <label for="p-cta">CTA</label>
+              <input id="p-cta" type="text" placeholder="ORDER NOW" />
+            </div>
+            <div class="field">
+              <label for="p-website">Website</label>
+              <input id="p-website" type="text" placeholder="elephantronics.lk" />
+            </div>
+            <div class="field">
+              <label for="p-whatsapp">WhatsApp</label>
+              <input id="p-whatsapp" type="text" placeholder="+94 75 844 3801" />
+            </div>
+            <div class="field">
+              <label for="p-delivery">Delivery note</label>
+              <input id="p-delivery" type="text" placeholder="ISLAND-WIDE DELIVERY" />
+            </div>
+          </div>
+          </div>
+
+          <div id="i-compare-fields" class="hidden">
+            <div class="grid-2">
+              <div class="field field-wide">
+                <label for="p-cmp-title">Comparison title</label>
+                <input id="p-cmp-title" type="text" placeholder="Arduino UNO vs ESP32" />
+              </div>
+              <div class="field field-wide">
+                <label for="p-cmp-subtitle">Sub-line <span class="hint">(one short line)</span></label>
+                <input id="p-cmp-subtitle" type="text" placeholder="Choose the right board for your project" />
+              </div>
+              <div class="field">
+                <label for="p-cmp-disc-amount">Discount badge <span class="hint">(blank = none)</span></label>
+                <input id="p-cmp-disc-amount" type="text" placeholder="15% OFF" />
+              </div>
+              <div class="field">
+                <label for="p-cmp-disc-text">Badge caption</label>
+                <input id="p-cmp-disc-text" type="text" placeholder="On development boards" />
+              </div>
+            </div>
+
+            <div class="c-group">
+              <label>Product 1</label>
+              <div class="grid-2">
+                <div class="field">
+                  <label for="p-cmp-1-name">Name</label>
+                  <input id="p-cmp-1-name" type="text" placeholder="Arduino UNO" />
+                </div>
+                <div class="field">
+                  <label for="p-cmp-1-accent">Accent colour</label>
+                  <select id="p-cmp-1-accent">
+                    <option value="Steel Blue">Steel Blue</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Grey">Grey</option>
+                    <option value="White">White</option>
+                  </select>
+                </div>
+                <div class="field field-wide">
+                  <label for="p-cmp-1-photo">Photo <span class="hint">(optional, from brand assets)</span></label>
+                  <select id="p-cmp-1-photo"><option value="">None</option></select>
+                </div>
+                <div class="field field-wide">
+                  <label for="p-cmp-1-feats">Features <span class="hint">(comma separated, max 4)</span></label>
+                  <input id="p-cmp-1-feats" type="text" placeholder="Beginner friendly, Education, Huge community" />
+                </div>
+                <div class="field field-wide">
+                  <label for="p-cmp-1-specs">Specs <span class="hint">(comma separated, max 4)</span></label>
+                  <input id="p-cmp-1-specs" type="text" placeholder="ATmega328P, 16 MHz, 14 digital I/O" />
+                </div>
+              </div>
+            </div>
+
+            <div class="c-group">
+              <label>Product 2</label>
+              <div class="grid-2">
+                <div class="field">
+                  <label for="p-cmp-2-name">Name</label>
+                  <input id="p-cmp-2-name" type="text" placeholder="ESP32" />
+                </div>
+                <div class="field">
+                  <label for="p-cmp-2-accent">Accent colour</label>
+                  <select id="p-cmp-2-accent">
+                    <option value="Orange">Orange</option>
+                    <option value="Steel Blue">Steel Blue</option>
+                    <option value="Grey">Grey</option>
+                    <option value="White">White</option>
+                  </select>
+                </div>
+                <div class="field field-wide">
+                  <label for="p-cmp-2-photo">Photo <span class="hint">(optional, from brand assets)</span></label>
+                  <select id="p-cmp-2-photo"><option value="">None</option></select>
+                </div>
+                <div class="field field-wide">
+                  <label for="p-cmp-2-feats">Features <span class="hint">(comma separated, max 4)</span></label>
+                  <input id="p-cmp-2-feats" type="text" placeholder="Wi-Fi + BLE, IoT, Smart home" />
+                </div>
+                <div class="field field-wide">
+                  <label for="p-cmp-2-specs">Specs <span class="hint">(comma separated, max 4)</span></label>
+                  <input id="p-cmp-2-specs" type="text" placeholder="Dual core, 240 MHz, Low power" />
+                </div>
+              </div>
+            </div>
+
+            <button id="btn-load-comparison" class="btn btn-small btn-ghost" type="button">Copy from Comparison tab</button>
+          </div>
+
+          <div id="i-grid-fields" class="hidden">
+            <div class="grid-2">
+              <div class="field">
+                <label for="g-style">Style preset</label>
+                <select id="g-style">
+                  <option value="clean">Clean brand — brand colours, no texture</option>
+                  <option value="retail">Retail promo — measured post colours, grunge</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Fill from the Poster tab</label>
+                <button id="btn-load-poster" class="btn btn-small btn-ghost" type="button">Copy from Poster tab</button>
+              </div>
+              <div class="field">
+                <label for="g-h1">Headline line 1</label>
+                <input id="g-h1" type="text" placeholder="DEVELOPMENT" />
+              </div>
+              <div class="field">
+                <label for="g-h2">Headline line 2</label>
+                <input id="g-h2" type="text" placeholder="BOARDS" />
+              </div>
+              <div class="field">
+                <label for="g-promo">Promo band</label>
+                <input id="g-promo" type="text" placeholder="4 POWERFUL BOARDS." />
+              </div>
+              <div class="field">
+                <label for="g-promo-tag">Promo second line</label>
+                <input id="g-promo-tag" type="text" placeholder="ENDLESS PROJECTS!" />
+              </div>
+              <div class="field">
+                <label for="g-badge-top">Badge, top slab</label>
+                <input id="g-badge-top" type="text" placeholder="4 BOARDS." />
+              </div>
+              <div class="field">
+                <label for="g-badge-bottom">Badge, bottom slab</label>
+                <input id="g-badge-bottom" type="text" placeholder="UNLIMITED PROJECTS!" />
+              </div>
+              <div class="field">
+                <label for="g-best">Best-price note</label>
+                <input id="g-best" type="text" placeholder="BEST PRICE GUARANTEED" />
+              </div>
+              <div class="field">
+                <label for="g-delivery">Delivery line</label>
+                <input id="g-delivery" type="text" placeholder="FREE OVER RS. 5,000" />
+              </div>
+              <div class="field field-wide">
+                <label for="g-tags">Hashtags <span class="hint">(optional, one row)</span></label>
+                <input id="g-tags" type="text" placeholder="#Arduino #IoT #SriLanka" />
+              </div>
+            </div>
+
+            <script type="text/template" id="g-accent-options">
+              <option value="">Auto (preset)</option>
+              <option value="#FF6B00">Orange</option>
+              <option value="#2A648C">Steel Blue</option>
+              <option value="#808080">Grey</option>
+              <option value="#FFFFFF">White</option>
+              <option value="#055499">Blue (retail)</option>
+              <option value="#AF0E06">Red (retail)</option>
+              <option value="#307405">Green (retail)</option>
+              <option value="#C58C07">Gold (retail)</option>
+            </script>
+
+            <div class="c-group">
+              <label>Panel 1</label>
+              <div class="grid-2">
+                <div class="field"><label for="g-1-name">Name</label><input id="g-1-name" type="text" placeholder="ARDUINO UNO R3" /></div>
+                <div class="field"><label for="g-1-desc">Variant line</label><input id="g-1-desc" type="text" placeholder="(CH340)" /></div>
+                <div class="field field-wide"><label for="g-1-feats">Features <span class="hint">(comma separated, max 4)</span></label><input id="g-1-feats" type="text" placeholder="ATmega328P, CH340 USB" /></div>
+                <div class="field"><label for="g-1-price">Price</label><input id="g-1-price" type="text" placeholder="LKR 1,170 ONLY" /></div>
+                <div class="field"><label for="g-1-accent">Accent</label><select id="g-1-accent"></select></div>
+                <div class="field field-wide"><label for="g-1-photo">Photo <span class="hint">(optional)</span></label><select id="g-1-photo"><option value="">None</option></select></div>
+              </div>
+            </div>
+
+            <div class="c-group">
+              <label>Panel 2</label>
+              <div class="grid-2">
+                <div class="field"><label for="g-2-name">Name</label><input id="g-2-name" type="text" placeholder="ARDUINO NANO V3" /></div>
+                <div class="field"><label for="g-2-desc">Variant line</label><input id="g-2-desc" type="text" placeholder="(CH340)" /></div>
+                <div class="field field-wide"><label for="g-2-feats">Features <span class="hint">(comma separated, max 4)</span></label><input id="g-2-feats" type="text" placeholder="ATmega328P, Micro USB" /></div>
+                <div class="field"><label for="g-2-price">Price</label><input id="g-2-price" type="text" placeholder="LKR 970 ONLY" /></div>
+                <div class="field"><label for="g-2-accent">Accent</label><select id="g-2-accent"></select></div>
+                <div class="field field-wide"><label for="g-2-photo">Photo <span class="hint">(optional)</span></label><select id="g-2-photo"><option value="">None</option></select></div>
+              </div>
+            </div>
+
+            <div class="c-group">
+              <label>Panel 3</label>
+              <div class="grid-2">
+                <div class="field"><label for="g-3-name">Name</label><input id="g-3-name" type="text" placeholder="ARDUINO PRO MINI" /></div>
+                <div class="field"><label for="g-3-desc">Variant line</label><input id="g-3-desc" type="text" placeholder="(5V/16MHz)" /></div>
+                <div class="field field-wide"><label for="g-3-feats">Features <span class="hint">(comma separated, max 4)</span></label><input id="g-3-feats" type="text" placeholder="ATmega328P, 5V, 16MHz" /></div>
+                <div class="field"><label for="g-3-price">Price</label><input id="g-3-price" type="text" placeholder="LKR 950 ONLY" /></div>
+                <div class="field"><label for="g-3-accent">Accent</label><select id="g-3-accent"></select></div>
+                <div class="field field-wide"><label for="g-3-photo">Photo <span class="hint">(optional)</span></label><select id="g-3-photo"><option value="">None</option></select></div>
+              </div>
+            </div>
+
+            <div class="c-group">
+              <label>Panel 4</label>
+              <div class="grid-2">
+                <div class="field"><label for="g-4-name">Name</label><input id="g-4-name" type="text" placeholder="ARDUINO MEGA 2560 R3" /></div>
+                <div class="field"><label for="g-4-desc">Variant line</label><input id="g-4-desc" type="text" placeholder="(CH340)" /></div>
+                <div class="field field-wide"><label for="g-4-feats">Features <span class="hint">(comma separated, max 4)</span></label><input id="g-4-feats" type="text" placeholder="ATmega2560, 54 digital I/O" /></div>
+                <div class="field"><label for="g-4-price">Price</label><input id="g-4-price" type="text" placeholder="LKR 4,700 ONLY" /></div>
+                <div class="field"><label for="g-4-accent">Accent</label><select id="g-4-accent"></select></div>
+                <div class="field field-wide"><label for="g-4-photo">Photo <span class="hint">(optional)</span></label><select id="g-4-photo"><option value="">None</option></select></div>
+              </div>
+            </div>
+          </div>
+
+          <button id="btn-render-poster" class="btn btn-primary btn-block" type="button">Render poster</button>
+        </section>
+
+        <section class="card hidden" id="i-gemini-card">
+          <div class="section-head">
+            <h2>AI prompt</h2>
+            <button id="btn-pull-prompt" class="btn btn-small btn-ghost" type="button">Use last prompt</button>
+          </div>
+          <div class="field">
+            <label for="i-prompt">Image prompt <span class="hint">(from Generate Prompt, or your own)</span></label>
+            <textarea id="i-prompt" rows="12" placeholder="Paste a generated prompt here, or describe the poster yourself."></textarea>
+          </div>
+          <button id="btn-gen-image" class="btn btn-primary btn-block" type="button">Generate image</button>
+        </section>
+
+        <div id="i-status" class="key-status"></div>
+
+        <section class="card hidden" id="i-result-card">
+          <h2>Result</h2>
+          <div class="img-result">
+            <img id="i-preview" alt="Generated poster" />
+            <div class="img-meta">
+              <a id="i-link" target="_blank" rel="noreferrer">Open full size</a>
+              <span id="i-info" class="hint"></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head"><h2>Saved posts</h2><span id="i-dir" class="hint"></span></div>
+          <div id="i-gallery" class="gallery"><div class="empty">Nothing generated yet.</div></div>
+        </section>
+      </div>
+    </main>
     <aside class="sidebar">
       <section class="card">
         <h2>Settings</h2>
         <div class="field">
-          <label for="f-apikey">OpenRouter API key</label>
+          <label for="f-kimi">Kimi API key <span class="hint">(text copy)</span></label>
+          <input id="f-kimi" type="password" placeholder="sk-..." autocomplete="off" />
+          <div id="kimi-status" class="key-status"></div>
+        </div>
+        <div class="field">
+          <label for="f-apikey">OpenRouter API key <span class="hint">(fallback)</span></label>
           <input id="f-apikey" type="password" placeholder="sk-or-..." autocomplete="off" />
           <div id="key-status" class="key-status"></div>
         </div>
@@ -155,6 +568,11 @@
             <option value="nvidia/nemotron-3-super-120b-a12b:free"></option>
             <option value="cohere/north-mini-code:free"></option>
           </datalist>
+        </div>
+        <div class="field">
+          <label for="f-gemini">Gemini API key <span class="hint">(image tab)</span></label>
+          <input id="f-gemini" type="password" placeholder="AIza..." autocomplete="off" />
+          <div id="gemini-status" class="key-status"></div>
         </div>
         <button id="btn-save-settings" class="btn btn-ghost btn-block">Save settings</button>
       </section>
@@ -172,6 +590,7 @@
         <h3>Final prompt</h3>
         <div class="modal-actions">
           <button id="btn-copy" class="btn btn-primary">Copy</button>
+          <button id="btn-to-image" class="btn btn-ghost">Generate image</button>
           <button id="btn-modal-save" class="btn btn-ghost">Save</button>
           <button id="btn-close" class="btn btn-ghost">Close</button>
         </div>
